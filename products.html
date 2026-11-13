@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smartphones | MobileHub</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<!-- Header / responsive navigation -->
+<header><div class="wrap nav"><a class="logo" href="index.html">MobileHub</a><nav class="links"><a href="index.html" class="">Home</a><a href="products.html" class="on">Brands</a><a href="accessories.html" class="">Accessories</a><a href="offers-contact.html#offers" class="">Offers</a><a href="products.html#compare" class="">Compare</a><a href="offers-contact.html#contact" class="">Contact</a></nav>
+<button class="btn o sm" onclick="toggleDark()">Dark mode</button><a class="btn sm" href="#" id="cart">Cart (0)</a><button id="menu" onclick="toggleMenu()" aria-label="Menu">&#9776;</button></div></header>
+<main class="wrap">
+<p class="muted">Home &gt; Smartphones</p>
+<div class="layout"><aside class="f box"><b>FILTERS</b><hr><b>Brand</b><div id="fb"></div><br><b>Max Price: <span id="pv"></span></b><input type="range" id="pr" min="10000" max="150000" step="5000" value="150000"><br><br><b>RAM</b><div id="fr"></div><br><b>Storage</b><div id="fs"></div></aside>
+<section style="flex:1"><div class="bar" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap"><b id="cnt"></b><input id="q" placeholder="Search phones..." style="max-width:220px"><select id="sort" style="max-width:190px"><option value="p">Sort by: Popularity</option><option value="lo">Price: Low to High</option><option value="hi">Price: High to Low</option></select></div>
+<div class="grid g3" id="list"></div><div class="row" id="pager" style="justify-content:center;margin-top:16px"></div></section></div>
+</main>
+<!-- Footer -->
+<div class="wrap"><footer><div>MobileHub | Your One-Stop Mobile Shop<br><a href="index.html">Home</a> | <a href="products.html">Brands</a> | <a href="accessories.html">Accessories</a> | <a href="offers-contact.html">Offers</a> | <a href="offers-contact.html#contact">Contact Us</a></div><div>Facebook | Instagram | Twitter<br>&copy; 2026 MobileHub. All rights reserved.</div></footer></div>
+<div id="cmpBar"><span><b id="cmpN">0</b> phone(s) selected for comparison</span><span><button class="btn sm" onclick="showCmp()">Compare Now</button> <button class="btn o sm" onclick="cmp=[];sessionStorage.removeItem('cmp');cmpBar();$$('.cmpchk').forEach(c=>c.checked=false)">Clear</button></span></div>
+<div class="modal" id="cmpM" onclick="if(event.target===this)this.style.display='none'"><div><h3>Compare Phones</h3><div class="tw" id="cmpBody"></div><br><button class="btn" onclick="$('#cmpM').style.display='none'">Close</button></div></div>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// cart counter (stored in localStorage)
+function cartN(){$('#cart').textContent='Cart ('+(+localStorage.getItem('cart')||0)+')'}
+function addCart(){localStorage.setItem('cart',(+localStorage.getItem('cart')||0)+1);cartN();}
+cartN();
+
+const U=new URLSearchParams(location.search);let page=1;const PER=6;
+const mk=(id,arr,sfx)=>$('#'+id).innerHTML=arr.map(v=>`<label><input type="checkbox" value="${v}" onchange="page=1;render()"> ${v}${sfx||''}</label>`).join('');
+mk('fb',['Apple','Samsung','Xiaomi','OnePlus','Realme']);mk('fr',[4,6,8,12],'GB');mk('fs',[64,128,256],'GB');
+if(U.get('brand'))$$('#fb input').forEach(c=>c.checked=c.value===U.get('brand'));if(U.get('q'))$('#q').value=U.get('q');
+const sel=id=>$$('#'+id+' input:checked').map(c=>c.value);
+$('#pr').oninput=()=>{page=1;render()};$('#q').oninput=()=>{page=1;render()};$('#sort').onchange=render;
+function render(){const b=sel('fb'),r=sel('fr').map(Number),s=sel('fs').map(Number),q=$('#q').value.toLowerCase(),mx=+$('#pr').value;$('#pv').textContent=inr(mx);
+ let L=PHONES.filter(p=>(!b.length||b.includes(p.brand))&&(!r.length||r.includes(p.ram))&&(!s.length||s.includes(p.storage))&&p.price<=mx&&(p.name+p.brand).toLowerCase().includes(q));
+ const o=$('#sort').value;if(o==='lo')L.sort((a,c)=>a.price-c.price);if(o==='hi')L.sort((a,c)=>c.price-a.price);
+ $('#cnt').textContent='Smartphones ('+L.length+' results)';const n=Math.max(1,Math.ceil(L.length/PER));if(page>n)page=n;
+ $('#list').innerHTML=L.slice((page-1)*PER,page*PER).map(p=>phoneCard(p,'product-detail.html')).join('')||'<p>No phones match your filters.</p>';
+ $('#pager').innerHTML=Array.from({length:n},(_,i)=>`<button class="btn ${i+1===page?'':'o'} sm" onclick="page=${i+1};render()">${i+1}</button>`).join('')}
+render();
+</script>
+</body>
+</html>

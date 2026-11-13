@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard | MobileHub Admin</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="admin">
+<!-- Sidebar -->
+<div class="side"><div class="logo" style="margin-bottom:14px">MobileHub</div><a href="dashboard.html" class="on">Dashboard</a><a href="manage-products.html" class="">Manage Products</a><a href="offers-accessories.html" class="">Offers &amp; Accessories</a><a href="dashboard.html#msg" class="">Messages</a><a href="profile.html" class="">Profile</a><a href="login.html" class="">Logout</a><br><button class="btn o sm" onclick="toggleDark()">Dark mode</button></div>
+<div class="main">
+<div class="bar"><h2>Dashboard</h2><span class="muted">Logged in as Admin</span></div>
+<div class="box" style="margin-bottom:14px"><b>Success:</b> Welcome back, Admin</div>
+<div class="stats"><div class="box"><span class="muted">Total Products</span><b>128</b></div><div class="box"><span class="muted">Active Offers</span><b>6</b></div><div class="box"><span class="muted">Accessories</span><b>42</b></div><div class="box" id="msg"><span class="muted">New Messages</span><b>9</b></div></div>
+<div class="row" style="align-items:stretch"><div class="box" style="flex:2;min-width:260px"><b>Sales / Visits Overview</b><canvas id="ch" width="600" height="180" style="width:100%"></canvas></div>
+<div class="box" style="flex:1;min-width:200px;text-align:center"><b>Top Categories</b><div style="width:130px;height:130px;border-radius:50%;margin:16px auto;background:conic-gradient(#2563eb 0 45%,#f59e0b 45% 75%,#10b981 75% 100%)"></div><div class="muted">Phones 45% | Cases 30% | Chargers 25%</div></div></div>
+<h3 class="t">Recent Orders / Activity</h3><div class="tw"><table><tr><th>ID</th><th>Item</th><th>Customer</th><th>Date</th><th>Status</th></tr>
+<tr><td>#1000</td><td>iPhone 15</td><td>Customer Name</td><td>2026-08-20</td><td>Pending</td></tr><tr><td>#1001</td><td>Galaxy S24</td><td>Customer Name</td><td>2026-08-21</td><td>Pending</td></tr><tr><td>#1002</td><td>Fast Charger 33W</td><td>Customer Name</td><td>2026-08-22</td><td>Shipped</td></tr><tr><td>#1003</td><td>OnePlus 12</td><td>Customer Name</td><td>2026-08-23</td><td>Pending</td></tr></table></div>
+</div></div>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// simple login guard (front-end demo only)
+if(!sessionStorage.getItem('admin'))location.href='login.html';
+
+// simple line chart drawn on canvas
+const cv=$('#ch'),g=cv.getContext('2d'),D=[40,120,100,30,90,150,110,160,140,50];g.strokeStyle='#2563eb';g.lineWidth=3;g.beginPath();D.forEach((v,i)=>{const x=20+i*(560/9),y=170-v;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke();
+</script>
+</body>
+</html>

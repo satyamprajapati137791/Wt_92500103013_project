@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mobile Accessories | MobileHub</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<!-- Header / responsive navigation -->
+<header><div class="wrap nav"><a class="logo" href="index.html">MobileHub</a><nav class="links"><a href="index.html" class="">Home</a><a href="products.html" class="">Brands</a><a href="accessories.html" class="on">Accessories</a><a href="offers-contact.html#offers" class="">Offers</a><a href="products.html#compare" class="">Compare</a><a href="offers-contact.html#contact" class="">Contact</a></nav>
+<button class="btn o sm" onclick="toggleDark()">Dark mode</button><a class="btn sm" href="#" id="cart">Cart (0)</a><button id="menu" onclick="toggleMenu()" aria-label="Menu">&#9776;</button></div></header>
+<main class="wrap">
+<p class="muted">Home &gt; Accessories</p><h2>MOBILE ACCESSORIES</h2><div class="chips" id="chips"></div><div class="grid g4" id="list"></div><div class="row" id="pager" style="justify-content:center;margin-top:16px"></div>
+</main>
+<!-- Footer -->
+<div class="wrap"><footer><div>MobileHub | Your One-Stop Mobile Shop<br><a href="index.html">Home</a> | <a href="products.html">Brands</a> | <a href="accessories.html">Accessories</a> | <a href="offers-contact.html">Offers</a> | <a href="offers-contact.html#contact">Contact Us</a></div><div>Facebook | Instagram | Twitter<br>&copy; 2026 MobileHub. All rights reserved.</div></footer></div>
+
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// cart counter (stored in localStorage)
+function cartN(){$('#cart').textContent='Cart ('+(+localStorage.getItem('cart')||0)+')'}
+function addCart(){localStorage.setItem('cart',(+localStorage.getItem('cart')||0)+1);cartN();}
+cartN();
+
+const CATS=['All','Cases & Covers','Chargers','Earphones','Screen Protectors','Power Banks'];let cat='All',page=1;const PER=8;
+function render(){const L=ACCS.filter(a=>cat==='All'||a.cat===cat),n=Math.max(1,Math.ceil(L.length/PER));
+ $('#chips').innerHTML=CATS.map(c=>`<button class="btn o sm ${c===cat?'on':''}" onclick="cat='${c.replace('&','&')}';page=1;render()">${c.replace('&','&amp;')}</button>`).join('');
+ $('#list').innerHTML=L.slice((page-1)*PER,page*PER).map(a=>`<div class="card"><div class="img" style="background:#dcfce7">${a.icon}</div><b>${a.name}</b><div class="muted">${a.cat}</div><div class="price">${inr(a.price)}</div><button class="btn sm" style="width:100%;margin-top:6px" onclick="addCart()">Add to Cart</button></div>`).join('');
+ $('#pager').innerHTML=Array.from({length:n},(_,i)=>`<button class="btn ${i+1===page?'':'o'} sm" onclick="page=${i+1};render()">${i+1}</button>`).join('')}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage Mobile Products | MobileHub Admin</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="admin">
+<!-- Sidebar -->
+<div class="side"><div class="logo" style="margin-bottom:14px">MobileHub</div><a href="dashboard.html" class="">Dashboard</a><a href="manage-products.html" class="on">Manage Products</a><a href="offers-accessories.html" class="">Offers &amp; Accessories</a><a href="dashboard.html#msg" class="">Messages</a><a href="profile.html" class="">Profile</a><a href="login.html" class="">Logout</a><br><button class="btn o sm" onclick="toggleDark()">Dark mode</button></div>
+<div class="main">
+<div class="bar"><h2>Manage Mobile Products</h2><span class="muted">Logged in as Admin</span></div>
+<div class="bar"><div class="row"><input id="q" placeholder="Search products..." style="width:220px"><select id="fb" style="width:150px"><option value="">Filter: Brand</option><option>Apple</option><option>Samsung</option><option>Xiaomi</option><option>OnePlus</option><option>Realme</option></select></div><button class="btn" onclick="add()">+ Add New Product</button></div>
+<div class="tw"><table><thead><tr><th>Image</th><th>Product Name</th><th>Brand</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tb"></tbody></table></div>
+</div></div>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// simple login guard (front-end demo only)
+if(!sessionStorage.getItem('admin'))location.href='login.html';
+
+let L=PHONES.map((p,i)=>({...p,stock:[24,21,18,15,12,9][i%6]*(i>5?1:1)}));
+const stat=s=>s===0?'Out of Stock':s<15?'Low Stock':'In Stock';
+function render(){const q=$('#q').value.toLowerCase(),b=$('#fb').value;$('#tb').innerHTML=L.filter(p=>p.name.toLowerCase().includes(q)&&(!b||p.brand===b)).map(p=>`<tr><td>${p.icon}</td><td>${p.name}</td><td>${p.brand}</td><td>${inr(p.price)}</td><td>${p.stock}</td><td>${stat(p.stock)}</td><td><button class="btn o sm" onclick="edit(${p.id})">Edit</button> <button class="btn red sm" onclick="del(${p.id})">Delete</button></td></tr>`).join('')}
+function add(){const n=prompt('Product name?');if(!n)return;const pr=+prompt('Price (Rs.)?');if(!pr||pr<=0)return alert('Enter a valid price');L.push({id:Date.now(),name:n,brand:'Apple',price:pr,stock:10,icon:'📱'});render()}
+function edit(id){const p=L.find(x=>x.id===id),n=prompt('Product name',p.name);if(n)p.name=n;const s=prompt('Stock',p.stock);if(s!==null&&!isNaN(s)&&s!=='')p.stock=+s;render()}
+function del(id){if(confirm('Delete this product?')){L=L.filter(x=>x.id!==id);render()}}
+$('#q').oninput=render;$('#fb').onchange=render;render();
+</script>
+</body>
+</html>

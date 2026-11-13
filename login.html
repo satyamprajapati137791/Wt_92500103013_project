@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Login | MobileHub</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="login box">
+<h2 style="text-align:center">MobileHub Admin Login</h2><br>
+<form id="lf" novalidate onsubmit="return doLogin(event)">
+<div class="field"><label for="u">Username / Email</label><input id="u" placeholder="admin@mobilehub.com"><div class="err" id="e_u"></div></div>
+<div class="field"><label for="p">Password</label><input id="p" type="password" placeholder="Enter password"><div class="err" id="e_p"></div></div>
+<div class="row" style="justify-content:space-between"><label class="muted"><input type="checkbox" style="width:auto"> Remember me</label><a href="#" class="muted" onclick="alert('Demo: password is Admin@123');return false">Forgot Password?</a></div><br>
+<button class="btn" style="width:100%">Login</button><div class="err" id="e_all" style="text-align:center;margin-top:8px"></div>
+</form><p class="muted" style="text-align:center">Authorized personnel only<br>Demo login: admin@mobilehub.com / Admin@123</p>
+</div>
+<script src="../js/main.js"></script>
+<script>
+// Admin login validation (front-end demo)
+function doLogin(e){e.preventDefault();const ok=[vEmail('u'),vPass('p')].every(Boolean);if(!ok)return false;
+ if($('#u').value.trim()==='admin@mobilehub.com'&&$('#p').value==='Admin@123'){sessionStorage.setItem('admin','1');location.href='dashboard.html'}else $('#e_all').textContent='Invalid username or password';return false}
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offers & Contact | MobileHub</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<!-- Header / responsive navigation -->
+<header><div class="wrap nav"><a class="logo" href="index.html">MobileHub</a><nav class="links"><a href="index.html" class="">Home</a><a href="products.html" class="">Brands</a><a href="accessories.html" class="">Accessories</a><a href="offers-contact.html#offers" class="on">Offers</a><a href="products.html#compare" class="">Compare</a><a href="offers-contact.html#contact" class="">Contact</a></nav>
+<button class="btn o sm" onclick="toggleDark()">Dark mode</button><a class="btn sm" href="#" id="cart">Cart (0)</a><button id="menu" onclick="toggleMenu()" aria-label="Menu">&#9776;</button></div></header>
+<main class="wrap">
+<p class="muted">Home &gt; Offers</p><h2 id="offers">LATEST OFFERS &amp; DEALS</h2><div class="grid g3" id="ol" style="margin-top:12px"></div><p class="muted" style="margin:8px 0 24px">Offer valid till stocks last. Terms &amp; Conditions apply.</p><hr>
+<h2 id="contact" style="margin:20px 0 10px">CONTACT US</h2>
+<div class="layout"><form id="cf" style="flex:1;width:100%" novalidate onsubmit="return send(event)">
+<div class="field"><label for="nm">Name</label><input id="nm" placeholder="Your full name"><div class="err" id="e_nm"></div></div>
+<div class="field"><label for="em">Email</label><input id="em" placeholder="you@example.com"><div class="err" id="e_em"></div></div>
+<div class="field"><label for="ph">Phone</label><input id="ph" placeholder="10-digit mobile number"><div class="err" id="e_ph"></div></div>
+<div class="field"><label for="sb">Subject</label><input id="sb" placeholder="Subject"><div class="err" id="e_sb"></div></div>
+<div class="field"><label for="ms">Message</label><textarea id="ms" rows="4" placeholder="Type your message..."></textarea><div class="err" id="e_ms"></div></div>
+<button class="btn">Send Message</button> <span id="res" class="ok"></span></form>
+<div class="box" style="flex:1;width:100%"><div class="card" style="height:170px;display:flex;align-items:center;justify-content:center;color:var(--muted)">Store location map (placeholder)</div><br><b>MobileHub Store</b><p class="muted">123 Main Road, Rajkot, Gujarat, India<br>Phone: +91 98XXX XXXXX<br>Email: support@mobilehub.com<br>Hours: Mon-Sat, 10AM - 8PM</p></div></div>
+</main>
+<!-- Footer -->
+<div class="wrap"><footer><div>MobileHub | Your One-Stop Mobile Shop<br><a href="index.html">Home</a> | <a href="products.html">Brands</a> | <a href="accessories.html">Accessories</a> | <a href="offers-contact.html">Offers</a> | <a href="offers-contact.html#contact">Contact Us</a></div><div>Facebook | Instagram | Twitter<br>&copy; 2026 MobileHub. All rights reserved.</div></footer></div>
+
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// cart counter (stored in localStorage)
+function cartN(){$('#cart').textContent='Cart ('+(+localStorage.getItem('cart')||0)+')'}
+function addCart(){localStorage.setItem('cart',(+localStorage.getItem('cart')||0)+1);cartN();}
+cartN();
+
+$('#ol').innerHTML=OFFERS.map(o=>`<div class="card"><div class="img" style="background:#fef3c7;font-size:1.6rem;height:90px">${o.off} OFF</div><b>${o.title}</b><div class="muted">${o.to} | Valid till ${o.till}</div><a class="btn sm" style="margin-top:6px" href="products.html">Shop Now</a></div>`).join('');
+// Contact form validation: required, email pattern, phone pattern, message length
+function send(e){e.preventDefault();const ok=[vRequired('nm','Name'),vEmail('em'),vPhone('ph'),vRequired('sb','Subject'),setErr('ms',$('#ms').value.trim().length>=10?'':'Message must be at least 10 characters')].every(Boolean);
+ $('#res').textContent=ok?'Thank you! Your message has been sent (demo).':'';if(ok)$('#cf').reset();return false}
+</script>
+</body>
+</html>

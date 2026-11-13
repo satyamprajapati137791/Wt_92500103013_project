@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product Detail | MobileHub</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<!-- Header / responsive navigation -->
+<header><div class="wrap nav"><a class="logo" href="index.html">MobileHub</a><nav class="links"><a href="index.html" class="">Home</a><a href="products.html" class="on">Brands</a><a href="accessories.html" class="">Accessories</a><a href="offers-contact.html#offers" class="">Offers</a><a href="products.html#compare" class="">Compare</a><a href="offers-contact.html#contact" class="">Contact</a></nav>
+<button class="btn o sm" onclick="toggleDark()">Dark mode</button><a class="btn sm" href="#" id="cart">Cart (0)</a><button id="menu" onclick="toggleMenu()" aria-label="Menu">&#9776;</button></div></header>
+<main class="wrap">
+<p class="muted">Home &gt; Smartphones &gt; <span id="bc"></span></p>
+<div class="layout"><div style="width:340px;max-width:100%"><div class="card"><div class="img" id="main" style="height:260px;background:#dbeafe;font-size:6rem"></div><div class="grid g4" style="gap:8px" id="thumbs"></div></div></div>
+<div style="flex:1"><h2 id="nm"></h2><div class="muted">&#9733;&#9733;&#9733;&#9733;&#9734; (128 reviews)</div><h2 class="price" id="pp"></h2>
+<p class="muted" style="margin:8px 0">Colors: Black | Blue | Silver | Gold</p><div class="row" id="st"></div><br><div class="row"><button class="btn" onclick="alert('Order placed (demo)')">Buy Now</button><button class="btn o" onclick="addCart()">Add to Cart</button></div>
+<p style="margin-top:12px" class="muted" id="ds"></p></div></div>
+<h3 class="t">Specifications</h3><table id="sp"></table>
+<h3 class="t">Compare with similar phones</h3><div class="tw"><table id="sim"></table></div>
+</main>
+<!-- Footer -->
+<div class="wrap"><footer><div>MobileHub | Your One-Stop Mobile Shop<br><a href="index.html">Home</a> | <a href="products.html">Brands</a> | <a href="accessories.html">Accessories</a> | <a href="offers-contact.html">Offers</a> | <a href="offers-contact.html#contact">Contact Us</a></div><div>Facebook | Instagram | Twitter<br>&copy; 2026 MobileHub. All rights reserved.</div></footer></div>
+
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// cart counter (stored in localStorage)
+function cartN(){$('#cart').textContent='Cart ('+(+localStorage.getItem('cart')||0)+')'}
+function addCart(){localStorage.setItem('cart',(+localStorage.getItem('cart')||0)+1);cartN();}
+cartN();
+
+const id=+new URLSearchParams(location.search).get('id')||1,p=PHONES.find(x=>x.id===id)||PHONES[0];
+document.title=p.name+' | MobileHub';$('#bc').textContent=p.name;$('#nm').textContent=p.name+' ('+p.ram+'GB/'+p.storage+'GB)';$('#pp').textContent=inr(p.price);$('#main').textContent=p.icon;
+$('#thumbs').innerHTML=[1,2,3,4].map(i=>`<div class="card" style="padding:6px;text-align:center;cursor:pointer" onclick="$('#main').style.opacity=${1-i*.12}">${p.icon}</div>`).join('');
+$('#st').innerHTML='Storage: '+[64,128,256,512].map(s=>`<button class="btn ${s===p.storage?'':'o'} sm">${s}GB</button>`).join('');
+$('#ds').textContent='The '+p.name+' by '+p.brand+' features a '+p.disp+' display, '+p.cam+' camera and a '+p.bat+' battery.';
+$('#sp').innerHTML=[['Display',p.disp],['RAM',p.ram+'GB'],['Storage',p.storage+'GB'],['Battery',p.bat],['Rear Camera',p.cam]].map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td></tr>`).join('');
+const S=[p,...PHONES.filter(x=>x.id!==p.id&&Math.abs(x.price-p.price)<30000).slice(0,2)];
+$('#sim').innerHTML='<tr><th></th>'+S.map(x=>`<th>${x.name}</th>`).join('')+'</tr>'+[['Price',x=>inr(x.price)],['Display',x=>x.disp],['RAM',x=>x.ram+'GB'],['Battery',x=>x.bat],['Camera',x=>x.cam]].map(r=>`<tr><td><b>${r[0]}</b></td>${S.map(x=>`<td>${r[1](x)}</td>`).join('')}</tr>`).join('');
+</script>
+</body>
+</html>

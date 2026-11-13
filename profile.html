@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit Profile | MobileHub Admin</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="admin">
+<!-- Sidebar -->
+<div class="side"><div class="logo" style="margin-bottom:14px">MobileHub</div><a href="dashboard.html" class="">Dashboard</a><a href="manage-products.html" class="">Manage Products</a><a href="offers-accessories.html" class="">Offers &amp; Accessories</a><a href="dashboard.html#msg" class="">Messages</a><a href="profile.html" class="on">Profile</a><a href="login.html" class="">Logout</a><br><button class="btn o sm" onclick="toggleDark()">Dark mode</button></div>
+<div class="main">
+<div class="bar"><h2>Edit Profile</h2><span class="muted">Logged in as Admin</span></div>
+<form id="pf" novalidate onsubmit="return save(event)" style="max-width:520px">
+<div class="field"><label for="fn">Full Name</label><input id="fn" value="Prajapati Satyam"><div class="err" id="e_fn"></div></div>
+<div class="field"><label for="em">Email</label><input id="em" value="admin@mobilehub.com"><div class="err" id="e_em"></div></div>
+<div class="field"><label for="ph">Phone Number</label><input id="ph" placeholder="98XXXXXXXX"><div class="err" id="e_ph"></div></div><hr style="margin:14px 0"><h3>Change Password</h3><br>
+<div class="field"><label for="cp">Current Password</label><input id="cp" type="password"><div class="err" id="e_cp"></div></div>
+<div class="field"><label for="np">New Password</label><input id="np" type="password"><div class="err" id="e_np"></div></div>
+<div class="field"><label for="cf2">Confirm New Password</label><input id="cf2" type="password"><div class="err" id="e_cf2"></div></div>
+<button class="btn">Save Changes</button> <button type="button" class="btn o" onclick="$('#pf').reset()">Cancel</button> <span id="res" class="ok"></span></form>
+</div></div>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// simple login guard (front-end demo only)
+if(!sessionStorage.getItem('admin'))location.href='login.html';
+
+// Profile validation: required, email, phone, password length/pattern, confirm password match
+function save(e){e.preventDefault();const ok=[vRequired('fn','Full name'),vEmail('em'),vPhone('ph'),vRequired('cp','Current password'),vPass('np'),setErr('cf2',$('#cf2').value===$('#np').value&&$('#cf2').value?'':'Passwords do not match')].every(Boolean);$('#res').textContent=ok?'Profile updated (demo).':'';return false}
+</script>
+</body>
+</html>

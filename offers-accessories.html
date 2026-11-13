@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage Offers & Accessories | MobileHub Admin</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="admin">
+<!-- Sidebar -->
+<div class="side"><div class="logo" style="margin-bottom:14px">MobileHub</div><a href="dashboard.html" class="">Dashboard</a><a href="manage-products.html" class="">Manage Products</a><a href="offers-accessories.html" class="on">Offers &amp; Accessories</a><a href="dashboard.html#msg" class="">Messages</a><a href="profile.html" class="">Profile</a><a href="login.html" class="">Logout</a><br><button class="btn o sm" onclick="toggleDark()">Dark mode</button></div>
+<div class="main">
+<div class="bar"><h2>Manage Offers & Accessories</h2><span class="muted">Logged in as Admin</span></div>
+<div class="bar"><div class="row"><button class="btn" id="t1" onclick="tab(1)">Offers</button><button class="btn o" id="t2" onclick="tab(2)">Accessories</button></div><button class="btn" onclick="add()">+ Add New</button></div>
+<div class="tw"><table><thead id="th"></thead><tbody id="tb"></tbody></table></div>
+</div></div>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// simple login guard (front-end demo only)
+if(!sessionStorage.getItem('admin'))location.href='login.html';
+
+let T=1,O=[...OFFERS],A=[...ACCS];
+function tab(t){T=t;$('#t1').className='btn'+(t===1?'':' o');$('#t2').className='btn'+(t===2?'':' o');render()}
+function render(){const b=(k)=>`<button class="btn red sm" onclick="del(${k})">Delete</button>`;
+ if(T===1){$('#th').innerHTML='<tr><th>Offer Title</th><th>Discount</th><th>Applies To</th><th>Valid Until</th><th>Status</th><th>Actions</th></tr>';$('#tb').innerHTML=O.map((o,i)=>`<tr><td>${o.title}</td><td>${o.off}</td><td>${o.to}</td><td>${o.till}</td><td>${o.status}</td><td>${b(i)}</td></tr>`).join('')}
+ else{$('#th').innerHTML='<tr><th>Image</th><th>Accessory Name</th><th>Category</th><th>Price</th><th>Actions</th></tr>';$('#tb').innerHTML=A.map((a,i)=>`<tr><td>${a.icon}</td><td>${a.name}</td><td>${a.cat}</td><td>${inr(a.price)}</td><td>${b(i)}</td></tr>`).join('')}}
+function add(){const n=prompt(T===1?'Offer title?':'Accessory name?');if(!n)return;if(T===1){const d=prompt('Discount % (1-90)?');if(!(d>0&&d<=90))return alert('Enter a discount between 1 and 90');O.push({title:n,off:d+'%',to:'All Brands',till:'2026-12-31',status:'Scheduled'})}else{const p=+prompt('Price (Rs.)?');if(!(p>0))return alert('Enter a valid price');A.push({name:n,cat:'Cases & Covers',price:p,icon:'🛡️'})}render()}
+function del(i){if(confirm('Delete this item?')){(T===1?O:A).splice(i,1);render()}}
+render();
+</script>
+</body>
+</html>
